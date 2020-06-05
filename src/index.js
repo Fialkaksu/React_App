@@ -1,11 +1,12 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import "./index.css";
 
 const movie = {
   title: "Avengers: Infinity War",
   vote_average: 8.5,
   image:
-    "https://upload.wikimedia.org/wikipedia/ru/thumb/4/4d/Avengers_Infinity_War_poster.jpg/306px-Avengers_Infinity_War_poster.jpg",
+    "https://lh3.googleusercontent.com/proxy/Gg6-tg_uXaommYBzn-hRHlXcUFtItcLGYSJIA6IXLrw_bkKPBN6tOcX8xhWV75ogYCh2O4z0RuBSE_pDObFGgHE3BxU8iEjsRL0Ca32qjPtQ3dp35i1GgtpUJE2UxpePaOv0R5htP3wAGQ",
   overview:
     "The Avengers and the Guardians of the Galaxy attempt to prevent Thanos from collecting the six all-powerful Infinity Stones as part of his quest to kill half of all life in the universe."
 };
@@ -13,7 +14,7 @@ const movie = {
 function Image(props) {
   // console.log("Image props ", props);
   //get from <Image src={image} alt={title} />
-  return <img src={props.src} alt={props.title} />;
+  return <img src={props.src} alt={props.title} width="100%" />;
 }
 
 // function MovieItem(props) {
@@ -41,32 +42,57 @@ class MovieItem extends React.Component {
     super();
 
     this.state = {
-      show: false
+      show: false,
+      like: false
     };
   }
+
+  toggleOverview = () => {
+    this.setState({
+      show: !this.state.show
+    });
+  };
+
+  handleLike = () => {
+    this.setState({
+      like: !this.state.like
+    });
+  };
 
   render() {
     const {
       data: { title, vote_average, image, overview }
     } = this.props;
-    console.log(this);
+    // console.log(this);
     console.log("state ", this.state);
     return (
-      <div>
+      <div style={{ width: "300px" }}>
         <Image src={image} alt={title} />
         <p>{title}</p>
         <p>{vote_average}</p>
-        <button
+        <div style={{ display: "flex", justifyContent: "space-between" }}>
+          <button type="button" onClick={this.toggleOverview}>
+            {this.state.show ? "Hide" : "Show"}
+          </button>
+          <button
+            type="button"
+            onClick={this.handleLike}
+            className={this.state.like ? "btn--like" : ""}
+          >
+            Like
+          </button>
+        </div>
+        {/* <button
           type="button"
           onClick={() => {
-            console.log("show");
+            console.log("hide");
             this.setState({
-              show: true
+              show: false
             });
           }}
         >
-          Show
-        </button>
+          Hide
+        </button> */}
         {this.state.show ? <p>{overview}</p> : null}
       </div>
     );
